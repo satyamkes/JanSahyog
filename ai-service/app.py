@@ -283,9 +283,7 @@ def calculate_match_score(request: EligibilityRequest, criteria: dict) -> int:
     return min(score, 100)
 
 def generate_eligibility_reason(request: EligibilityRequest, criteria: dict, category: str) -> str:
-    """
-    Generate human-readable eligibility reason
-    """
+    
     reasons = []
     
     if request.age >= criteria["min_age"] and request.age <= criteria["max_age"]:

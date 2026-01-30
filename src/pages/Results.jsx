@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import './Results.css';
 
-function Results() {
+function Results(){
   const location = useLocation();
   const schemes = location.state?.schemes || [];
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
-function Dashboard({ user }) {
+function Dashboard({ user }){
   const quickStats = [
     {
       icon: '🎯',

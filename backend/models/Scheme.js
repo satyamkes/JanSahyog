@@ -42,7 +42,7 @@ const schemeSchema = new mongoose.Schema({
       default: Infinity
     },
 
-    minIncome: {
+    minIncome:{
       type: Number,
       default: 0
     },

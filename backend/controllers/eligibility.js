@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const Scheme = require('../models/Scheme');
 
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 
-
+// Check eligibility using AI service
 router.post('/check', async (req, res) => {
   try {
     const { age, income, category, state, gender } = req.body;
@@ -13,122 +13,78 @@ router.post('/check', async (req, res) => {
     if (!age || !income || !category || !state) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide all required fields: age, income, category, state'
+        message: 'Please provide all required fields: age, income, category, and state'
       });
     }
 
-    // Get all active schemes
-    const allSchemes = await Scheme.find({ isActive: true });
+    console.log('Checking eligibility with AI service:', { age, income, category, state, gender });
 
-
-    const eligibleSchemes = allSchemes.filter(scheme => {
-      const criteria = scheme.eligibilityCriteria;
-
-      //  age
-      if (age < criteria.minAge || age > criteria.maxAge) {
-        return false;
-      }
-
-      //income
-      if (income < criteria.minIncome || income > criteria.maxIncome) {
-        return false;
-      }
-
-      // category
-      if (criteria.categories && criteria.categories.length > 0) {
-        if (!criteria.categories.includes('All') && !criteria.categories.includes(category)) {
-          return false;
-        }
-      }
-
-      // gendeR
-      if (criteria.gender && criteria.gender !== 'All' && criteria.gender !== gender) {
-        return false;
-      }
-
-      if (criteria.states && criteria.states.length > 0) {
-        if (!criteria.states.includes('All') && !criteria.states.includes(state)) {
-          return false;
-        }
-      }
-
-      return true;
+    // Call AI service
+    const response = await axios.post(`${AI_SERVICE_URL}/api/check-eligibility`, {
+      age: parseInt(age),
+      income: parseFloat(income),
+      category,
+      state,
+      gender: gender || null
     });
 
-    // Add eligibility reason
-    const schemesWithDetails = eligibleSchemes.map(scheme => {
-      let reasons = [];
-      
-      if(scheme.eligibilityCriteria.categories.includes(category)) {
-        reasons.push(`You belong to ${category} category`);
-      }
-      
+    console.log(`Found ${response.data.count} eligible schemes`);
 
-      if(income <= scheme.eligibilityCriteria.maxIncome) {
-        reasons.push(`Your income (₹${income.toLocaleString()}) meets the criteria`);
-      }
-      
-      if (age >= scheme.eligibilityCriteria.minAge && age <= scheme.eligibilityCriteria.maxAge) {
-        reasons.push(`Your age (${age}) falls within the eligible range`);
-      }
-
-      return {
-        ...scheme.toObject(),
-        eligibilityReason: reasons.join(', '),
-        matchScore: Math.floor(85 + Math.random() * 15) 
-      };
+    // Return the schemes from AI service
+    res.json({
+      success: true,
+      count: response.data.count,
+      schemes: response.data.schemes
     });
 
-    // Sort by match score
-    schemesWithDetails.sort((a, b) => b.matchScore - a.matchScore);
+  } catch (error) {
+    console.error('Eligibility check error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check eligibility. Please try again.',
+      error: error.response?.data?.detail || error.message
+    });
+  }
+});
+
+// Upload document for OCR
+router.post('/ocr', async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please upload a document'
+      });
+    }
+
+    // Create form data for AI service
+    const FormData = require('form-data');
+    const formData = new FormData();
+    formData.append('file', req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype
+    });
+
+    console.log('Processing OCR for:', req.file.originalname);
+
+    // Call AI service OCR endpoint
+    const response = await axios.post(`${AI_SERVICE_URL}/api/ocr`, formData, {
+      headers: formData.getHeaders()
+    });
 
     res.json({
       success: true,
-      count: schemesWithDetails.length,
-      schemes: schemesWithDetails,
-      userProfile: {
-        age,
-        income,category,
-        state,
-        gender
-      }
+      data: response.data.data
     });
+
   } catch (error) {
-    console.error('Eligibility check error:', error);
+    console.error('OCR error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Error checking eligibility'
+      message: 'Failed to process document. Please try again.',
+      error: error.response?.data?.detail || error.message
     });
   }
 });
-
-// @route   POST /api/eligibility/ai-check
-// @desc    Check eligibility using AI service (optional)
-// @access  Public
-router.post('/ai-check', async (req, res) => {
-  try {
-    const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
-    
-    // Forward request to AI service
-    const response = await axios.post(`${aiServiceUrl}/api/check-eligibility`, req.body);
-    
-    res.json(response.data);
-  } catch (error) {
-    console.error('AI eligibility check error:', error);
-    
-    if (error.code === 'ECONNREFUSED') {
-      console.log('AI service unavailable, using fallback logic');
-      // 
-      return require('./eligibility').post('/check')(req, res);
-    }
-    
-    res.status(500).json({
-      success: false,
-      message: 'Error checking eligibility with AI service'
-    });
-
-  }
-});
-
 
 module.exports = router;
