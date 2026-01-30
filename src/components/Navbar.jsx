@@ -21,19 +21,19 @@ function Navbar({ isAuthenticated, user, onLogout }) {
   return (
     <nav className="navbar">
       <div className="container navbar-container">
-          <Link to="/" className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           <div className="brand-icon">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <path d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z" 
-                    fill="currentColor" opacity="0.2"/>
-              <path d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z" 
-                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 16L15 19L21 13" 
-                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z"
+                fill="currentColor" opacity="0.2" />
+              <path d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12 16L15 19L21 13"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
-          <span className="brand-text">WelfareHub</span>
+          <span className="brand-text">JanSahyog</span>
         </Link>
 
         <button className="navbar-toggle" onClick={toggleMenu} aria-label="Toggle menu">
@@ -80,8 +80,8 @@ function Navbar({ isAuthenticated, user, onLogout }) {
             </>
           )}
         </div>
-        </div>
-      </nav>
+      </div>
+    </nav>
   );
 }
 

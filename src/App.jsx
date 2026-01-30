@@ -1,6 +1,6 @@
 
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './pages/Home';
@@ -22,50 +22,77 @@ const PrivateRoute = ({ children }) => {
 
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    if (token && userData) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+    setUser(null);
+  };
+
+  const handleLogin = (userData, token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setIsAuthenticated(true);
+    setUser(userData);
+  };
+
   return (
     <Router>
       <div className="App">
         {/* Navigation */}
-        <Navbar />
-        
+        <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout} />
+
         <main className="main-content">
-           <Routes>
-           
+          <Routes>
+
 
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-           
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/register" element={<Register onLogin={handleLogin} />} />
+
+
             <Route
 
-              path="/dashboard" 
+              path="/dashboard"
               element={
                 <PrivateRoute>
                   <Dashboard />
                 </PrivateRoute>
-              } 
-            /> 
+              }
+            />
 
             <Route
-              path="/check-eligibility" 
+              path="/check-eligibility"
               element={
                 <PrivateRoute>
                   <CheckEligibility />
                 </PrivateRoute>
-              } 
+              }
             />
-           
-             <Route 
-               path="/results" 
-               element={
+
+            <Route
+              path="/results"
+              element={
                 <PrivateRoute>
                   <Results />
                 </PrivateRoute>
-              } 
+              }
             />
-            
-           
+
+
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>

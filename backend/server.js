@@ -1,4 +1,4 @@
-const express =require('express');
+const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
@@ -14,14 +14,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/schemes', require('./routes/schemes'));
-app.use('/api/eligibility', require('./routes/eligibility'));
+app.use('/api/auth', require('./controllers/auth'));
+app.use('/api/schemes', require('./controllers/schemes'));
+app.use('/api/eligibility', require('./controllers/eligibility'));
 
 
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     message: 'Welfare API is running',
     timestamp: new Date().toISOString()
   });
@@ -45,7 +45,7 @@ app.use((req, res) => {
 });
 
 
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.BACKEND_PORT || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📡 API available at http://localhost:${PORT}/api`);

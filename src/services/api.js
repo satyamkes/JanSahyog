@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 // Create axios
 
@@ -28,14 +28,14 @@ axiosInstance.interceptors.request.use(
 
 // API
 const api = {
- 
+
   register: (data) => axiosInstance.post('/auth/register', data),
-  
+
   login: (data) => axiosInstance.post('/auth/login', data),
 
   // Schemes endpoints
   getSchemes: () => axiosInstance.get('/schemes'),
-  
+
   getScheme: (id) => axiosInstance.get(`/schemes/${id}`),
 
   checkEligibility: (data) => axiosInstance.post('/eligibility/check', data),
