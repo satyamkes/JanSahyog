@@ -1,4 +1,4 @@
-/* ===== ANIMATED BACKGROUND ===== */
+
 .animated-background {
   position: fixed;
   top: 0;
@@ -10,7 +10,7 @@
   background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #fef3c7 100%);
 }
 
-.floating-shape {
+.floating-shape{
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
@@ -75,7 +75,6 @@
   }
 }
 
-/* ===== MODERN HERO SECTION ===== */
 .hero-modern {
   position: relative;
   padding: 8rem 0 6rem;
@@ -420,7 +419,6 @@
   margin-bottom: 1rem;
 }
 
-/* ===== BENTO GRID FEATURES ===== */
 .features-modern {
   padding: 8rem 0;
   background: white;

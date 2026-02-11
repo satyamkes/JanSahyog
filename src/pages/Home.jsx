@@ -237,40 +237,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="testimonials-modern">
-        <div className="container">
-          <div className="section-header-modern">
-            <span className="section-tag">Testimonials</span>
-            <h2 className="section-title-modern">
-              Loved by <span className="gradient-text">Thousands</span>
-            </h2>
-          </div>
-
-          <div className="testimonials-grid">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="testimonial-card"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="testimonial-quote">"</div>
-                <p className="testimonial-text">{testimonial.quote}</p>
-                <div className="testimonial-rating">
-                  {'⭐'.repeat(testimonial.rating)}
-                </div>
-                <div className="testimonial-author">
-                  <div className="author-avatar">{testimonial.image}</div>
-                  <div>
-                    <div className="author-name">{testimonial.name}</div>
-                    <div className="author-role">{testimonial.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+    
       <section className="cta-modern">
         <div className="container">
           <div className="cta-card-modern">
