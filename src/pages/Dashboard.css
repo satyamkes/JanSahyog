@@ -85,7 +85,6 @@
   margin-top: 0.25rem;
 }
 
-/* Dashboard Content */
 .dashboard-content {
   display: grid;
   grid-template-columns: 2fr 1fr;

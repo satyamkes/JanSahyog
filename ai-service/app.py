@@ -7,6 +7,11 @@ from PIL import Image
 import io
 import re
 
+# Import statistical modules
+from statistical_engine import StatisticalEngine
+from recommendation_engine import RecommendationEngine
+from scheme_profiles import SchemeProfiles
+
 
 app = FastAPI(title="Welfare Scheme AI Service", version="1.0.0")
 
@@ -198,38 +203,80 @@ async def extract_text_from_image(file: UploadFile = File(...)):
 @app.post("/api/check-eligibility")
 async def check_eligibility(request: EligibilityRequest):
     """
-    Check eligibility for welfare schemes based on user criteria
+    Check eligibility for welfare schemes based on user criteria.
+    Uses advanced probability and statistical analysis.
     """
     try:
+        # Prepare user data for analysis
+        user_data = {
+            'age': request.age,
+            'income': request.income,
+            'category': request.category,
+            'state': request.state,
+            'gender': request.gender
+        }
+        
+        # Calculate user's vulnerability index
+        vulnerability_index = StatisticalEngine.calculate_vulnerability_index(user_data)
+        
         eligible_schemes = []
         
-
         for scheme in SAMPLE_SCHEMES:
             criteria = scheme["criteria"]
-            #checking
-            # age
+            
+            # Basic eligibility checks (hard filters)
+            # Age check
             if request.age < criteria["min_age"] or request.age > criteria["max_age"]:
                 continue
             
-            # income
+            # Income check
             if request.income > criteria["max_income"]:
                 continue
             
-            # category
+            # Category check
             if "All" not in criteria["categories"] and request.category not in criteria["categories"]:
                 continue
             
-            # Check gender if specified
+            # Gender check
             if "gender" in criteria and request.gender:
                 if criteria["gender"] != request.gender:
                     continue
             
-            # Check state
+            # State check
             if "All" not in criteria["states"] and request.state not in criteria["states"]:
                 continue
             
-            # Calculate match score
+            # Calculate statistical probability score
+            probability = StatisticalEngine.calculate_overall_probability(
+                user_data, 
+                criteria, 
+                scheme["category"]
+            )
+            
+            # Skip schemes with very low probability
+            if probability < 0.3:
+                continue
+            
+            # Calculate confidence interval
+            confidence_interval = StatisticalEngine.calculate_confidence_interval(probability)
+            
+            # Calculate legacy match score for backward compatibility
             match_score = calculate_match_score(request, criteria)
+            
+            # Get statistical breakdown
+            statistical_analysis = StatisticalEngine.get_statistical_breakdown(
+                user_data,
+                criteria,
+                scheme["category"],
+                probability
+            )
+            
+            # Get scheme impact score
+            impact_score = SchemeProfiles.get_impact_score(scheme["name"])
+            
+            # Get expected benefit
+            expected_benefit = SchemeProfiles.format_expected_benefit(scheme["name"])
+            statistical_analysis["expectedBenefit"] = expected_benefit
             
             # Generate eligibility reason
             reason = generate_eligibility_reason(request, criteria, scheme["category"])
@@ -237,24 +284,49 @@ async def check_eligibility(request: EligibilityRequest):
             # Add to eligible schemes
             eligible_schemes.append({
                 "name": scheme["name"],
-
-                 "description": scheme["description"],
+                "description": scheme["description"],
                 "category": scheme["category"],
                 "benefits": scheme["benefits"],
-
                 "duration": scheme.get("duration", "Ongoing"),
                 "matchScore": match_score,
+                "probabilityScore": round(probability, 3),
+                "confidenceInterval": confidence_interval,
                 "eligibilityReason": reason,
-                "requirements": scheme.get("requirements", [])
+                "requirements": scheme.get("requirements", []),
+                "statisticalAnalysis": statistical_analysis,
+                "impactScore": impact_score
             })
         
-        # Sort by match score
-        eligible_schemes.sort(key=lambda x: x["matchScore"], reverse=True)
+        # Rank schemes using recommendation engine
+        ranked_schemes = RecommendationEngine.rank_schemes(
+            eligible_schemes, 
+            vulnerability_index
+        )
+        
+        # Add personalized explanations
+        for scheme in ranked_schemes:
+            scheme["personalizedExplanation"] = RecommendationEngine.get_personalized_explanation(
+                scheme,
+                user_data,
+                vulnerability_index
+            )
+        
+        # Generate user profile summary
+        user_profile = RecommendationEngine.generate_user_profile_summary(
+            user_data,
+            vulnerability_index,
+            ranked_schemes
+        )
+        
+        # Filter top recommendations
+        top_recommendations = RecommendationEngine.filter_top_recommendations(ranked_schemes)
         
         return {
             "success": True,
-            "count": len(eligible_schemes),
-            "schemes": eligible_schemes
+            "count": len(top_recommendations),
+            "totalEligible": len(ranked_schemes),
+            "schemes": top_recommendations,
+            "userProfile": user_profile
         }
         
     except Exception as e:
