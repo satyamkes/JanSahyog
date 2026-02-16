@@ -12,19 +12,17 @@ class SchemeProfiles:
     Used for probability calculations and impact assessment.
     """
     
-    # Scheme impact scores (0-1 scale)
-    # Based on average benefit amount, coverage, and life-changing potential
+    
     IMPACT_SCORES = {
         "PM Kisan Samman Nidhi": 0.75,
-        "Ayushman Bharat": 0.95,  # High impact - healthcare critical
-        "Pradhan Mantri Awas Yojana": 0.90,  # High impact - housing
-        "National Scholarship Portal": 0.85,  # High impact - education
-        "Pradhan Mantri Mudra Yojana": 0.80,  # Business growth
-        "Beti Bachao Beti Padhao": 0.88,  # Social impact
+        "Ayushman Bharat": 0.95,  
+        "Pradhan Mantri Awas Yojana": 0.90, 
+        "National Scholarship Portal": 0.85,  
+        "Pradhan Mantri Mudra Yojana": 0.80, 
+        "Beti Bachao Beti Padhao": 0.88, 
     }
-    
-    # Target demographic success rates (simulated based on scheme design)
-    TARGET_DEMOGRAPHICS = {
+
+    TARGET_DEMOGRAPHICS ={
         "PM Kisan Samman Nidhi": {
             "optimal_age_range": (25, 60),
             "optimal_income_range": (0, 150000),
@@ -63,34 +61,34 @@ class SchemeProfiles:
         }
     }
     
-    # Expected benefit ranges (in ₹)
+    
     EXPECTED_BENEFITS = {
-        "PM Kisan Samman Nidhi": {
+        "PM Kisan Samman Nidhi":{
             "min": 6000,
             "max": 6000,
             "frequency": "Annual"
         },
-        "Ayushman Bharat": {
+        "Ayushman Bharat":{
             "min": 0,
             "max": 500000,
             "frequency": "Per incident (up to 5 lakh coverage)"
         },
-        "Pradhan Mantri Awas Yojana": {
+        "Pradhan Mantri Awas Yojana":{
             "min": 150000,
             "max": 250000,
             "frequency": "One-time subsidy"
         },
-        "National Scholarship Portal": {
+        "National Scholarship Portal":{
             "min": 10000,
             "max": 50000,
             "frequency": "Annual"
         },
-        "Pradhan Mantri Mudra Yojana": {
+        "Pradhan Mantri Mudra Yojana":{
             "min": 50000,
             "max": 1000000,
             "frequency": "Loan amount"
         },
-        "Beti Bachao Beti Padhao": {
+        "Beti Bachao Beti Padhao":{
             "min": 5000,
             "max": 100000,
             "frequency": "Progressive savings"

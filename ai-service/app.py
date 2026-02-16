@@ -6,16 +6,10 @@ import pytesseract
 from PIL import Image
 import io
 import re
-
-# Import statistical modules
 from statistical_engine import StatisticalEngine
 from recommendation_engine import RecommendationEngine
 from scheme_profiles import SchemeProfiles
-
-
 app = FastAPI(title="Welfare Scheme AI Service", version="1.0.0")
-
-# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,8 +17,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Models
 class EligibilityRequest(BaseModel):
     age: int
     income: float
@@ -39,8 +31,6 @@ class SchemeMatch(BaseModel):
     benefits: str
     match_score: int
     eligibility_reason: str
-
-# Sample schemes database (in production, this would come from MongoDB)
 SAMPLE_SCHEMES = [
     {
         "name": "PM Kisan Samman Nidhi",
@@ -176,14 +166,12 @@ async def extract_text_from_image(file: UploadFile = File(...)):
     Extract text from uploaded document using OCR
     """
     try:
-        # Read image
+
         contents = await file.read()
         image = Image.open(io.BytesIO(contents))
-        
-        # Perform OCR
+
         text = pytesseract.image_to_string(image)
         
-        # Extract potential information using regex
         extracted_data = {
             "raw_text": text,
             "email": re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text),
@@ -207,7 +195,7 @@ async def check_eligibility(request: EligibilityRequest):
     Uses advanced probability and statistical analysis.
     """
     try:
-        # Prepare user data for analysis
+      
         user_data = {
             'age': request.age,
             'income': request.income,
@@ -215,55 +203,50 @@ async def check_eligibility(request: EligibilityRequest):
             'state': request.state,
             'gender': request.gender
         }
-        
-        # Calculate user's vulnerability index
+   
         vulnerability_index = StatisticalEngine.calculate_vulnerability_index(user_data)
-        
         eligible_schemes = []
         
         for scheme in SAMPLE_SCHEMES:
             criteria = scheme["criteria"]
-            
-            # Basic eligibility checks (hard filters)
-            # Age check
+        
             if request.age < criteria["min_age"] or request.age > criteria["max_age"]:
                 continue
-            
-            # Income check
+
             if request.income > criteria["max_income"]:
                 continue
             
-            # Category check
+ 
             if "All" not in criteria["categories"] and request.category not in criteria["categories"]:
                 continue
             
-            # Gender check
+  
             if "gender" in criteria and request.gender:
                 if criteria["gender"] != request.gender:
                     continue
             
-            # State check
+
             if "All" not in criteria["states"] and request.state not in criteria["states"]:
                 continue
             
-            # Calculate statistical probability score
+
             probability = StatisticalEngine.calculate_overall_probability(
                 user_data, 
                 criteria, 
                 scheme["category"]
             )
             
-            # Skip schemes with very low probability
+
             if probability < 0.3:
                 continue
             
-            # Calculate confidence interval
+
             confidence_interval = StatisticalEngine.calculate_confidence_interval(probability)
             
-            # Calculate legacy match score for backward compatibility
+
             match_score = calculate_match_score(request, criteria)
             
-            # Get statistical breakdown
+
             statistical_analysis = StatisticalEngine.get_statistical_breakdown(
                 user_data,
                 criteria,
@@ -271,17 +254,17 @@ async def check_eligibility(request: EligibilityRequest):
                 probability
             )
             
-            # Get scheme impact score
+
             impact_score = SchemeProfiles.get_impact_score(scheme["name"])
             
-            # Get expected benefit
+
             expected_benefit = SchemeProfiles.format_expected_benefit(scheme["name"])
             statistical_analysis["expectedBenefit"] = expected_benefit
             
-            # Generate eligibility reason
+
             reason = generate_eligibility_reason(request, criteria, scheme["category"])
             
-            # Add to eligible schemes
+
             eligible_schemes.append({
                 "name": scheme["name"],
                 "description": scheme["description"],
@@ -296,14 +279,13 @@ async def check_eligibility(request: EligibilityRequest):
                 "statisticalAnalysis": statistical_analysis,
                 "impactScore": impact_score
             })
-        
-        # Rank schemes using recommendation engine
+
         ranked_schemes = RecommendationEngine.rank_schemes(
             eligible_schemes, 
             vulnerability_index
         )
         
-        # Add personalized explanations
+
         for scheme in ranked_schemes:
             scheme["personalizedExplanation"] = RecommendationEngine.get_personalized_explanation(
                 scheme,
@@ -311,14 +293,14 @@ async def check_eligibility(request: EligibilityRequest):
                 vulnerability_index
             )
         
-        # Generate user profile summary
+
         user_profile = RecommendationEngine.generate_user_profile_summary(
             user_data,
             vulnerability_index,
             ranked_schemes
         )
         
-        # Filter top recommendations
+  
         top_recommendations = RecommendationEngine.filter_top_recommendations(ranked_schemes)
         
         return {
@@ -338,14 +320,13 @@ def calculate_match_score(request: EligibilityRequest, criteria: dict) -> int:
     """
     score = 85  # Base score
     
-    # Age
-    # matching..
+    
     age_range = criteria["max_age"] - criteria["min_age"]
     age_position = (request.age - criteria["min_age"]) / age_range if age_range > 0 else 0.5
     if 0.3 <= age_position <= 0.7:  # Sweet spot
         score += 5
     
-    # Income matching..
+    # Income matching.....
     income_ratio = request.income / criteria["max_income"] if criteria["max_income"] > 0 else 0
     if income_ratio < 0.5:
         score += 10

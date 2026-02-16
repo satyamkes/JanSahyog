@@ -78,7 +78,7 @@ class RecommendationEngine:
             scheme['recommendationScore'] = rec_score
             ranked_schemes.append(scheme)
         
-        # Sort by recommendation score (highest first)
+        # Sort by recommendation score(highest first)
         ranked_schemes.sort(key=lambda x: x['recommendationScore'], reverse=True)
         
         return ranked_schemes

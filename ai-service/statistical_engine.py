@@ -14,18 +14,15 @@ class StatisticalEngine:
     Core statistical analysis engine for scheme matching.
     Uses probability theory and statistical methods to determine scheme suitability.
     """
-    
-    # Demographic weights for different factors
-    WEIGHTS = {
+
+    WEIGHTS ={
         'age': 0.20,
         'income': 0.35,
         'category': 0.25,
         'location': 0.10,
         'gender': 0.10
     }
-    
-    # Category vulnerability scores (higher = more vulnerable)
-    CATEGORY_VULNERABILITY = {
+    CATEGORY_VULNERABILITY ={
         'ST': 0.95,
         'SC': 0.90,
         'OBC': 0.75,
@@ -34,8 +31,7 @@ class StatisticalEngine:
         'All': 0.50
     }
     
-    # Scheme priority levels
-    PRIORITY_WEIGHTS = {
+    PRIORITY_WEIGHTS={
         'Healthcare': 1.0,
         'Education': 0.95,
         'Housing': 0.85,
@@ -60,22 +56,21 @@ class StatisticalEngine:
         if user_age < min_age or user_age > max_age:
             return 0.0
         
-        # Calculate the optimal age (middle of range)
+
         optimal_age = (min_age + max_age) / 2
         age_range = max_age - min_age
         
         if age_range == 0:
             return 1.0 if user_age == optimal_age else 0.0
         
-        # Standard deviation is 1/4 of the range (covers most of distribution)
+
         std_dev = age_range / 4
         
-        # Calculate probability using normal distribution
-        # Users closer to optimal age have higher probability
+       
         prob = stats.norm.pdf(user_age, optimal_age, std_dev)
         max_prob = stats.norm.pdf(optimal_age, optimal_age, std_dev)
         
-        # Normalize to 0-1 range
+        
         return min(prob / max_prob, 1.0) if max_prob > 0 else 1.0
     
     @staticmethod
@@ -99,11 +94,10 @@ class StatisticalEngine:
         if max_income == 0:
             return 1.0
         
-        # Income ratio
+        
         income_ratio = user_income / max_income
         
-        # Different categories have different income sensitivity
-        # Healthcare and Education prioritize lower income more
+
         if scheme_category in ['Healthcare', 'Education', 'Social Welfare']:
             # Steeper curve - heavily favors lower income
             decay_rate = 2.5
@@ -155,15 +149,15 @@ class StatisticalEngine:
             Probability score between 0 and 1
         """
         if required_gender is None:
-            return 1.0  # No gender requirement
+            return 1.0  
         
         if user_gender is None:
-            return 0.7  # Unknown gender, moderate probability
+            return 0.7 
         
         if user_gender.lower() == required_gender.lower():
-            return 1.0  # Perfect match
+            return 1.0 
         
-        return 0.0  # Gender mismatch
+        return 0.0 
     
     @staticmethod
     def calculate_overall_probability(user_data: Dict, scheme_criteria: Dict, 
@@ -179,7 +173,7 @@ class StatisticalEngine:
         Returns:
             Overall probability score between 0 and 1
         """
-        # Calculate individual probabilities
+
         age_prob = StatisticalEngine.calculate_age_probability(
             user_data['age'],
             scheme_criteria.get('min_age', 0),
@@ -202,17 +196,17 @@ class StatisticalEngine:
             scheme_criteria.get('gender')
         )
         
-        # If any essential criteria fails completely, return 0
+       
         if age_prob == 0 or income_prob == 0 or category_prob == 0 or gender_prob == 0:
             return 0.0
         
-        # Weighted combination
+        
         overall_prob = (
             StatisticalEngine.WEIGHTS['age'] * age_prob +
             StatisticalEngine.WEIGHTS['income'] * income_prob +
             StatisticalEngine.WEIGHTS['category'] * category_prob +
             StatisticalEngine.WEIGHTS['gender'] * gender_prob +
-            StatisticalEngine.WEIGHTS['location'] * 0.8  # Default location score
+            StatisticalEngine.WEIGHTS['location']*0.8
         )
         
         return min(overall_prob, 1.0)
@@ -235,10 +229,10 @@ class StatisticalEngine:
         if probability >= 1:
             return (1.0, 1.0)
         
-        # Z-score for 95% confidence interval
+      
         z = 1.96
         
-        # Wilson score interval
+       
         denominator = 1 + z**2 / sample_size
         center = (probability + z**2 / (2 * sample_size)) / denominator
         margin = z * math.sqrt((probability * (1 - probability) / sample_size + 
@@ -263,8 +257,7 @@ class StatisticalEngine:
         """
         vulnerability = 0.0
         
-        # Income vulnerability (using national poverty line context)
-        # Assuming poverty line around ₹100,000/year
+
         poverty_line = 100000
         if user_data['income'] <= poverty_line:
             income_vuln = 1.0 - (user_data['income'] / poverty_line)
@@ -277,7 +270,7 @@ class StatisticalEngine:
             user_data['category'], 0.5
         )
         
-        # Age vulnerability (very young or very old are more vulnerable)
+
         age = user_data['age']
         if age < 18:
             age_vuln = 0.8
@@ -286,7 +279,7 @@ class StatisticalEngine:
         else:
             age_vuln = 0.3
         
-        # Weighted combination
+
         vulnerability = (
             0.50 * income_vuln +
             0.30 * category_vuln +
@@ -322,7 +315,7 @@ class StatisticalEngine:
             scheme_category
         )
         
-        # Determine priority level
+
         if probability >= 0.8:
             priority = "VERY HIGH"
         elif probability >= 0.6:

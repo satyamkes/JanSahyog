@@ -15,8 +15,7 @@ def test_probability_calculations():
     print("=" * 60)
     print("Testing Statistical Engine")
     print("=" * 60)
-    
-    # Test Case 1: Low-income farmer
+
     print("\n📊 Test Case 1: Low-income farmer")
     user_data_1 = {
         'age': 45,
@@ -48,7 +47,7 @@ def test_probability_calculations():
     print(f"  Confidence Interval: [{conf_interval_1[0]:.3f}, {conf_interval_1[1]:.3f}]")
     print(f"  Vulnerability Index: {vuln_1:.3f}")
     
-    # Test Case 2: Student from SC category
+
     print("\n📊 Test Case 2: Student from SC category")
     user_data_2 = {
         'age': 18,
@@ -80,8 +79,8 @@ def test_probability_calculations():
     print(f"  Confidence Interval: [{conf_interval_2[0]:.3f}, {conf_interval_2[1]:.3f}]")
     print(f"  Vulnerability Index: {vuln_2:.3f}")
     
-    # Test Case 3: Female child (Beti Bachao Beti Padhao)
-    print("\n📊 Test Case 3: Female child (for Beti Bachao Beti Padhao)")
+    
+    print("\n Test Case 3: Female child (for Beti Bachao Beti Padhao)")
     user_data_3 = {
         'age': 5,
         'income': 80000,
@@ -113,8 +112,8 @@ def test_probability_calculations():
     print(f"  Confidence Interval: [{conf_interval_3[0]:.3f}, {conf_interval_3[1]:.3f}]")
     print(f"  Vulnerability Index: {vuln_3:.3f}")
     
-    # Test Case 4: Senior citizen
-    print("\n📊 Test Case 4: Senior citizen")
+  
+    print("\n Test Case 4: Senior citizen")
     user_data_4 = {
         'age': 68,
         'income': 150000,
@@ -133,7 +132,7 @@ def test_probability_calculations():
 
     if user_data_4['income'] > scheme_criteria_4['max_income']:
         print(f"  User: Age {user_data_4['age']}, Income ₹{user_data_4['income']:,}, Category: {user_data_4['category']}")
-        print(f"  ❌ Not eligible (income exceeds limit)")
+        print(f"  Not eligible (income exceeds limit)")
     else:
         prob_4 = StatisticalEngine.calculate_overall_probability(
             user_data_4,
@@ -146,7 +145,7 @@ def test_probability_calculations():
     print("Testing Recommendation Engine")
     print("=" * 60)
 
-    sample_schemes = [
+    sample_schemes=[
         {
             'name': 'PM Kisan',
             'category': 'Agriculture',
@@ -169,7 +168,7 @@ def test_probability_calculations():
         0.75, 'Healthcare', vuln_1, 0.95
     )
     
-    print(f"\n📈 Recommendation Scores for Low-income Farmer:")
+    print(f"\n Recommendation Scores for Low-income Farmer:")
     print(f"  PM Kisan (Agriculture): {rec_score_1:.2f}/100")
     print(f"  Ayushman Bharat (Healthcare): {rec_score_2:.2f}/100")
     
@@ -187,7 +186,7 @@ def test_probability_calculations():
     print(f"  Ayushman Bharat: {SchemeProfiles.get_impact_score('Ayushman Bharat')}")
     print(f"  PMAY: {SchemeProfiles.get_impact_score('Pradhan Mantri Awas Yojana')}")
     
-    print("\n" + "=" * 60)
+    print("\n"+"=" * 60)
     print("All tests completed successfully!")
     print("=" * 60)
 

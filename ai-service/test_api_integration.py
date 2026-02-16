@@ -32,14 +32,14 @@ def test_api_integration():
     
     if 'userProfile' in data_1:
         profile = data_1['userProfile']
-        print(f"\n  👤 User Profile:")
+        print(f"\n  User Profile:")
         print(f"     Vulnerability Index: {profile.get('vulnerabilityIndex', 'N/A')}")
         print(f"     Income Category: {profile.get('incomeCategory', 'N/A')}")
         print(f"     Priority Categories: {', '.join(profile.get('priorityCategories', []))}")
         print(f"     Recommendation: {profile.get('recommendedFocus', 'N/A')}")
     
     if data_1.get('schemes'):
-        print(f"\n  📋 Top 3 Recommended Schemes:")
+        print(f"\n  Top 3 Recommended Schemes:")
         for i, scheme in enumerate(data_1['schemes'][:3], 1):
             print(f"\n  {i}. {scheme['name']}")
             print(f"     Category: {scheme['category']}")
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     try:
         test_api_integration()
     except requests.exceptions.ConnectionError:
-        print("❌ Error: Could not connect to API server at http://localhost:8000")
+        print("Error: Could not connect to API server at http://localhost:8000")
         print("   Make sure the AI service is running with: python app.py")
     except Exception as e:
         print(f"Error: {str(e)}")
