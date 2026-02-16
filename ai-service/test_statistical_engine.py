@@ -2,7 +2,6 @@
 Test file for Statistical Engine
 Tests probability calculations and statistical analysis
 """
-
 import sys
 sys.path.append('/Users/satyamkrkesarwani/Desktop/CODING/JanSahyog/ai-service')
 
@@ -131,8 +130,7 @@ def test_probability_calculations():
         'categories': ['All'],
         'states': ['All']
     }
-    
-    # This should fail income check
+
     if user_data_4['income'] > scheme_criteria_4['max_income']:
         print(f"  User: Age {user_data_4['age']}, Income ₹{user_data_4['income']:,}, Category: {user_data_4['category']}")
         print(f"  ❌ Not eligible (income exceeds limit)")
@@ -147,8 +145,7 @@ def test_probability_calculations():
     print("\n" + "=" * 60)
     print("Testing Recommendation Engine")
     print("=" * 60)
-    
-    # Test recommendation scoring
+
     sample_schemes = [
         {
             'name': 'PM Kisan',
@@ -180,7 +177,6 @@ def test_probability_calculations():
     print("Testing Scheme Profiles")
     print("=" * 60)
     
-    # Test scheme profiles
     print(f"\n💰 Expected Benefits:")
     print(f"  PM Kisan: {SchemeProfiles.format_expected_benefit('PM Kisan Samman Nidhi')}")
     print(f"  Ayushman Bharat: {SchemeProfiles.format_expected_benefit('Ayushman Bharat')}")
@@ -192,7 +188,7 @@ def test_probability_calculations():
     print(f"  PMAY: {SchemeProfiles.get_impact_score('Pradhan Mantri Awas Yojana')}")
     
     print("\n" + "=" * 60)
-    print("✅ All tests completed successfully!")
+    print("All tests completed successfully!")
     print("=" * 60)
 
 if __name__ == "__main__":

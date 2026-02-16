@@ -13,7 +13,7 @@ def test_api_integration():
     print("API Integration Test - Statistical Scheme Matching")
     print("=" * 70)
     
-    # Test Case 1: Low-income farmer
+    #Low-income farmer
     print("\n🌾 Test Case 1: Low-income farmer")
     payload_1 = {
         "age": 45,
@@ -53,7 +53,7 @@ def test_api_integration():
             if 'personalizedExplanation' in scheme:
                 print(f"     Why: {scheme['personalizedExplanation']}")
     
-    # Test Case 2: SC category student
+    #SC student
     print("\n\n📚 Test Case 2: SC category student")
     payload_2 = {
         "age": 18,
@@ -84,7 +84,7 @@ def test_api_integration():
             print(f"     Probability: {scheme.get('probabilityScore', 'N/A')}")
             print(f"     Recommendation Score: {scheme.get('recommendationScore', 'N/A')}/100")
     
-    # Test Case 3: Female child
+    #Female child
     print("\n\n👧 Test Case 3: Female child (for Beti Bachao Beti Padhao)")
     payload_3 = {
         "age": 5,
@@ -121,4 +121,4 @@ if __name__ == "__main__":
         print("❌ Error: Could not connect to API server at http://localhost:8000")
         print("   Make sure the AI service is running with: python app.py")
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f"Error: {str(e)}")
