@@ -11,7 +11,7 @@
   margin-bottom: 2rem;
 }
 
-/* Success Banner */
+
 .success-banner {
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   line-height: 1.6;
 }
 
-/* Results Grid */
+
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -109,7 +109,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* Benefits */
+
 .result-benefits {
   display: flex;
   flex-direction: column;
@@ -152,7 +152,7 @@
   font-size: 1rem;
 }
 
-/* Reason */
+
 .result-reason {
   padding: 1.25rem;
   background: linear-gradient(135deg, rgba(26, 86, 219, 0.05) 0%, rgba(14, 116, 144, 0.05) 100%);
@@ -181,14 +181,14 @@
   font-size: 0.9375rem;
 }
 
-/* Actions */
+
 .result-actions {
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
 }
 
-/* Details */
+
 .result-details {
   border-top: 1px solid var(--gray-200);
   padding-top: 1.25rem;
@@ -295,7 +295,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .results-header {
     flex-direction: column;

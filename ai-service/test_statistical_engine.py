@@ -70,7 +70,7 @@ def test_probability_calculations():
         scheme_criteria_2,
         'Education'
     )
-    
+
     conf_interval_2 = StatisticalEngine.calculate_confidence_interval(prob_2)
     vuln_2 = StatisticalEngine.calculate_vulnerability_index(user_data_2)
     
