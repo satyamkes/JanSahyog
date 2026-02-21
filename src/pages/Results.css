@@ -1,6 +1,3 @@
-/* ================================
-   Results Page
-   ================================ */
 
 .results-page {
   background: var(--gray-50);
@@ -16,7 +13,6 @@
   gap: 1rem;
 }
 
-/* Success Banner */
 .success-banner {
   display: flex;
   align-items: center;
@@ -46,7 +42,6 @@
   line-height: 1.6;
 }
 
-/* Results Grid */
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -115,7 +110,6 @@
   margin-bottom: 1.25rem;
 }
 
-/* Benefits */
 .result-benefits {
   display: flex;
   flex-direction: column;
@@ -161,7 +155,6 @@
   font-size: 0.9375rem;
 }
 
-/* Reason */
 .result-reason {
   padding: 1rem;
   background: var(--gray-50);
@@ -188,14 +181,12 @@
   font-size: 0.9375rem;
 }
 
-/* Actions */
 .result-actions {
   display: flex;
   gap: 0.625rem;
   margin-bottom: 1rem;
 }
 
-/* Details accordion */
 .result-details {
   border-top: 1px solid var(--gray-100);
   padding-top: 1rem;
@@ -280,7 +271,6 @@
   font-size: 1rem;
 }
 
-/* Footer */
 .results-footer {
   background: white;
   border: 1px solid var(--gray-200);
