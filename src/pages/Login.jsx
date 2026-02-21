@@ -13,8 +13,7 @@ function Login({ onLogin }) {
 
   const [error, setError] =useState('');
   const [loading, setLoading] =useState(false);
-
-  const handleChange = (e) => {
+  const handleChange = (e)=>{
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -46,8 +45,7 @@ function Login({ onLogin }) {
             <h1 className="auth-title"> Welcome Back</h1>
            <p className="auth-subtitle">Sign in to access your dashboard</p>
         </div>
-
-        {error && (
+        {error &&(
           <div className="alert alert-error">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="2"/>

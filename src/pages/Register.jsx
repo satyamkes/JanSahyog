@@ -58,6 +58,7 @@ function Register({ onLogin }) {
           </div>
         )}
 
+        
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name" className="form-label">Full Name</label>
