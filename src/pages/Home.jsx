@@ -60,14 +60,7 @@ function Home() {
     }
   ];
 
-  const stats = [
-    { value: '50+', label: 'Active Schemes', icon: '📋' },
-    { value: '10K+', label: 'Happy Users', icon: '👥' },
-    { value: '95%', label: 'Success Rate', icon: '✨' },
-    { value: '24/7', label: 'Support', icon: '💬' }
-  ];
-
-  const testimonials = [
+  const testimonials=[
     {
       name: 'Priya Sharma',
       role: 'Small Business Owner',
@@ -93,7 +86,6 @@ function Home() {
 
   return (
     <div className="home-page page-container">
-      {/* Animated Background */}
       <div className="animated-background">
         <div className="floating-shape shape-1"></div>
         <div className="floating-shape shape-2"></div>
@@ -106,7 +98,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Hero Section */}
       <section className="hero-modern">
         <div className="container">
           <div className="hero-grid">
@@ -137,21 +128,6 @@ function Home() {
                 <Link to="/login" className="btn-modern btn-outline-modern">
                   <span>Sign In</span>
                 </Link>
-              </div>
-
-
-              <div className="stats-modern">
-                {stats.map((stat, index) => (
-                  <div
-                    key={index}
-                    className="stat-card-modern"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="stat-icon-modern">{stat.icon}</div>
-                    <div className="stat-value-modern">{stat.value}</div>
-                    <div className="stat-label-modern">{stat.label}</div>
-                  </div>
-                ))}
               </div>
             </div>
 

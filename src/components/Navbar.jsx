@@ -63,7 +63,7 @@ function Navbar({ isAuthenticated, user, onLogout }) {
         {/* Brand */}
         <Link to="/" className="navbar-brand">
           <div className="brand-icon">
-            <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+            {/* <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
               <path 
                 d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z"
                 fill="currentColor" 
@@ -84,7 +84,7 @@ function Navbar({ isAuthenticated, user, onLogout }) {
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
               />
-            </svg>
+            </svg> */}
           </div>
           <div className="brand-content">
             <span className="brand-text">JanSahyog</span>
