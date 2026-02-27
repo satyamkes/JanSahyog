@@ -212,37 +212,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-    
-      <section className="cta-modern">
-        <div className="container">
-          <div className="cta-card-modern">
-            <div className="cta-pattern"></div>
-            <div className="cta-content-modern">
-              <h2 className="cta-title-modern">
-                Ready to Unlock Your Benefits?
-              </h2>
-              <p className="cta-subtitle-modern">
-                Join 10,000+ citizens who've discovered schemes worth ₹50,000+ on average
-              </p>
-              <div className="cta-buttons">
-                <Link to="/register" className="btn-modern btn-white-modern">
-                  <span>Create Free Account</span>
-                  <span className="btn-shine"></span>
-                </Link>
-                <Link to="/login" className="btn-modern btn-ghost-modern">
-                  Learn More →
-                </Link>
-              </div>
-            </div>
-            <div className="cta-visual">
-              <div className="floating-icon icon-1">🎉</div>
-              <div className="floating-icon icon-2">💰</div>
-              <div className="floating-icon icon-3">🏆</div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
